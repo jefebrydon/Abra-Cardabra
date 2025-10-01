@@ -64,16 +64,16 @@ const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, error 
               </div>
             )}
 
-            {/* API Request Details */}
+            {/* OpenAI API Request Details */}
             {apiRequest && (
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Send className="h-4 w-4 text-purple-600" />
-                  <h4 className="text-sm font-semibold text-purple-600">API Request</h4>
+                  <h4 className="text-sm font-semibold text-purple-600">OpenAI API Request</h4>
                 </div>
-                <pre className="bg-muted p-3 rounded-md text-xs overflow-x-auto border">
-                  {JSON.stringify(apiRequest, null, 2)}
-                </pre>
+                <div className="bg-muted p-3 rounded-md text-xs overflow-x-auto border">
+                  {apiRequest.body?.prompt || 'No prompt available'}
+                </div>
               </div>
             )}
 
