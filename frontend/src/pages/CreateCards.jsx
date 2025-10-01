@@ -4,6 +4,7 @@ import DebugPanel from '../components/CreateCards/DebugPanel';
 
 const CreateCards = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [cardConcepts, setCardConcepts] = useState(null);
   const [debugData, setDebugData] = useState({
     formData: null,
     generatedPrompt: null,
@@ -84,7 +85,8 @@ Return only valid JSON:
   const handleFormSubmit = async (formData) => {
     setIsLoading(true);
     
-    // Clear previous debug data
+    // Clear previous debug data and card concepts
+    setCardConcepts(null);
     setDebugData({
       formData: null,
       generatedPrompt: null,
@@ -147,8 +149,22 @@ Return only valid JSON:
         apiResponse
       }));
 
-      // TODO: Handle successful response and display cards
-      console.log('Cards generated:', apiResponse);
+      // Handle successful response and display cards
+      if (apiResponse.success && apiResponse.card_concepts) {
+        console.log('Cards generated successfully:', apiResponse.card_concepts);
+        console.log('Debug info:', apiResponse.debug);
+        
+        // Store the card concepts for display
+        setCardConcepts(apiResponse.card_concepts);
+        
+        // Log each card concept
+        apiResponse.card_concepts.forEach((concept, index) => {
+          console.log(`Card ${index + 1}:`, concept.card_phrase);
+          console.log(`Illustration:`, concept.illustration_prompt);
+        });
+      } else {
+        throw new Error(apiResponse.error || 'Invalid response format from server');
+      }
 
     } catch (error) {
       console.error('Error generating cards:', error);
@@ -183,6 +199,37 @@ Return only valid JSON:
             onSubmit={handleFormSubmit}
             isLoading={isLoading}
           />
+          
+          {/* Display Generated Card Concepts */}
+          {cardConcepts && (
+            <div className="mt-8">
+              <h2 className="text-2xl font-bold text-purple-800 mb-6 text-center">
+                🎉 Your Generated Cards
+              </h2>
+              <div className="grid gap-6 md:grid-cols-3">
+                {cardConcepts.map((concept, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-6 border-2 border-purple-200">
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                        Card {index + 1}
+                      </h3>
+                      <p className="text-gray-700 italic">
+                        "{concept.card_phrase}"
+                      </p>
+                    </div>
+                    <div className="bg-gray-50 rounded p-3">
+                      <h4 className="text-sm font-medium text-gray-600 mb-2">
+                        Illustration Prompt:
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        {concept.illustration_prompt}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           
           <DebugPanel 
             formData={debugData.formData}

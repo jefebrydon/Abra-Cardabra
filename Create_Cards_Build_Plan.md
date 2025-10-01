@@ -66,17 +66,8 @@ Based on the PROJECT_OVERVIEW.md, here's a detailed plan to build the Create_Car
 - **Debug Feature**: Log and return the exact prompt being sent
 
 ### 4.2 OpenAI Integration
-- Integrate with OpenAI API (using ChatGPT-4 or ChatGPT-5 as requested)
-- Configure response to return exactly 3 card concepts in JSON format:
-  ```json
-  [
-    {
-      "card_phrase": "Custom greeting text",
-      "illustration_prompt": "Description for image generation"
-    },
-    // ... 2 more concepts
-  ]
-  ```
+- Integrate with OpenAI API (using ChatGPT-5)
+
 - **Debug Feature**: Return the full API response for inspection
 
 ## Phase 5: Frontend-Backend Integration
