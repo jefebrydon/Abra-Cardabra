@@ -70,22 +70,19 @@ Based on the PROJECT_OVERVIEW.md, here's a detailed plan to build the Create_Car
 
 - **Debug Feature**: Return the full API response for inspection
 
-## Phase 5: Frontend-Backend Integration
+## Phase 5: Connect Nano Banana image generator
 
-### 5.1 API Communication
-- Create frontend service to call backend API
+- create function to send illustration_prompt (from OpenAI's API response) to Gemini API
+- Connect to Gemini API (model:"gemini-2.5-flash-image-preview")
+- OpenAI's API response might have 1, 2, or 3 instances of the illustration_prompt, and the function should request a new image for each.
 - Handle loading states during API calls
 - Implement error handling with user feedback
-
-### 5.2 Response Processing
-- Parse OpenAI response
-- Display generated card concepts
-- **Debug Feature**: Show raw API response in debug panel
 
 ## Phase 6: Card Display Components
 
 ### 6.1 Card Concept Layout
-- Image area (initially with loading placeholder)
+- Image area (initially with loading placeholder),then display the generated images (returned from Gemini API) in the top part of each card component.
+- Make sure that each image is shown in the correct card (the image's original illustration_prompt should already be associated with one of the 3 card_concepts)
 - Card phrase area (editable text)
 - Send button (placeholder for now)
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const openaiService = require('../services/openai');
+const geminiService = require('../services/gemini');
 const router = express.Router();
 
 /**
@@ -149,12 +150,125 @@ function validateFormData(formData) {
 }
 
 /**
+ * POST /api/generate-images
+ * Generate images for illustration prompts using Gemini API
+ */
+router.post('/generate-images', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    // Extract illustration prompts from request
+    const { illustrationPrompts } = req.body;
+
+    // Validate request data
+    if (!illustrationPrompts || !Array.isArray(illustrationPrompts)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required data: illustrationPrompts must be an array',
+        debug: {
+          receivedData: req.body,
+          timestamp: new Date().toISOString()
+        }
+      });
+    }
+
+    if (illustrationPrompts.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'At least one illustration prompt is required',
+        debug: {
+          illustrationPrompts,
+          timestamp: new Date().toISOString()
+        }
+      });
+    }
+
+    console.log('🎨 Processing image generation request');
+    console.log('📝 Number of prompts:', illustrationPrompts.length);
+    illustrationPrompts.forEach((prompt, index) => {
+      console.log(`📝 Prompt ${index + 1}:`, prompt.substring(0, 100) + '...');
+    });
+
+    // Call Gemini service to generate images
+    const result = await geminiService.generateImages(illustrationPrompts);
+
+    const endTime = Date.now();
+    const totalProcessingTime = endTime - startTime;
+
+    // Add request timing to debug info
+    result.debug.requestProcessingTime = totalProcessingTime;
+    result.debug.requestTimestamp = new Date().toISOString();
+
+    console.log('✅ Images generated successfully');
+    console.log('⏱️ Total processing time:', totalProcessingTime, 'ms');
+    console.log('📊 Generated', result.successfulCount, 'out of', illustrationPrompts.length, 'images');
+
+    // Return successful response
+    res.json({
+      success: true,
+      images: result.images,
+      successfulCount: result.successfulCount,
+      failedCount: result.failedCount,
+      debug: result.debug
+    });
+
+  } catch (error) {
+    const endTime = Date.now();
+    const totalProcessingTime = endTime - startTime;
+
+    console.error('❌ Error generating images:', error.message);
+    console.error('🔍 Error details:', error);
+
+    // Return error response with debug information
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      debug: {
+        errorCode: error.code || 'UNKNOWN_ERROR',
+        processingTime: totalProcessingTime,
+        timestamp: new Date().toISOString(),
+        requestData: {
+          illustrationPromptsCount: req.body.illustrationPrompts ? req.body.illustrationPrompts.length : 0
+        }
+      }
+    });
+  }
+});
+
+/**
  * GET /api/test-openai
  * Test endpoint to verify OpenAI connection
  */
 router.get('/test-openai', async (req, res) => {
   try {
     const testResult = await openaiService.testConnection();
+    
+    res.json({
+      success: testResult.success,
+      message: testResult.message,
+      debug: {
+        timestamp: new Date().toISOString(),
+        error: testResult.error || null
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      debug: {
+        timestamp: new Date().toISOString()
+      }
+    });
+  }
+});
+
+/**
+ * GET /api/test-gemini
+ * Test endpoint to verify Gemini connection
+ */
+router.get('/test-gemini', async (req, res) => {
+  try {
+    const testResult = await geminiService.testConnection();
     
     res.json({
       success: testResult.success,

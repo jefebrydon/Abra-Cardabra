@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, ChevronRight, Copy, Bug, FileText, MessageSquare, Send, Download, AlertTriangle } from 'lucide-react';
+import { ChevronDown, ChevronRight, Copy, Bug, FileText, MessageSquare, Send, Download, AlertTriangle, Image } from 'lucide-react';
 
-const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, error }) => {
+const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, imageGenerationRequest, imageGenerationResponse, error }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const copyToClipboard = () => {
@@ -13,6 +13,8 @@ const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, error 
       generatedPrompt,
       apiRequest,
       apiResponse,
+      imageGenerationRequest,
+      imageGenerationResponse,
       error,
       timestamp: new Date().toISOString()
     };
@@ -82,10 +84,36 @@ const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, error 
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Download className="h-4 w-4 text-green-600" />
-                  <h4 className="text-sm font-semibold text-green-600">API Response</h4>
+                  <h4 className="text-sm font-semibold text-green-600">OpenAI API Response</h4>
                 </div>
                 <pre className="bg-muted p-3 rounded-md text-xs overflow-x-auto border">
                   {JSON.stringify(apiResponse, null, 2)}
+                </pre>
+              </div>
+            )}
+
+            {/* Image Generation Request */}
+            {imageGenerationRequest && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Image className="h-4 w-4 text-orange-600" />
+                  <h4 className="text-sm font-semibold text-orange-600">Gemini Image Generation Request</h4>
+                </div>
+                <pre className="bg-muted p-3 rounded-md text-xs overflow-x-auto border">
+                  {JSON.stringify(imageGenerationRequest, null, 2)}
+                </pre>
+              </div>
+            )}
+
+            {/* Image Generation Response */}
+            {imageGenerationResponse && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Image className="h-4 w-4 text-orange-600" />
+                  <h4 className="text-sm font-semibold text-orange-600">Gemini Image Generation Response</h4>
+                </div>
+                <pre className="bg-muted p-3 rounded-md text-xs overflow-x-auto border">
+                  {JSON.stringify(imageGenerationResponse, null, 2)}
                 </pre>
               </div>
             )}
@@ -104,7 +132,7 @@ const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, error 
             )}
 
             {/* Copy All Data Button */}
-            {(formData || generatedPrompt || apiRequest || apiResponse) && (
+            {(formData || generatedPrompt || apiRequest || apiResponse || imageGenerationRequest || imageGenerationResponse) && (
               <Button
                 onClick={copyToClipboard}
                 variant="outline"
