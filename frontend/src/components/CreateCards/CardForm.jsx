@@ -29,9 +29,10 @@ const CardForm = ({ onSubmit, isLoading }) => {
 
   const tones = [
     'Funny',
-    'Sentimental', 
-    'Casual',
-    'Formal'
+    'Sweet',
+    'Formal',
+    'Whimsical',
+    'Sarcastic'
   ];
 
 

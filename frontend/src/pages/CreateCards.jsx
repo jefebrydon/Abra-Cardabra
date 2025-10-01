@@ -13,21 +13,70 @@ const CreateCards = () => {
   });
 
   const buildPrompt = (formData) => {
-    // This will be replaced with the actual prompt template later
-    const prompt = `Create 3 personalized greeting card concepts for:
+    // Tone configuration mapping
+    const toneConfig = {
+      "Funny": {
+        "role": "Comedy writer + AI image prompt designer",
+        "card_style": "Witty, absurd, pun-based one-liners; irony, exaggeration, wordplay, surreal humor",
+        "illustration_style": "Colorful, cartoon-like, lighthearted, greeting-card friendly (never photorealistic, never dark)"
+      },
+      "Sweet": {
+        "role": "Romantic poet + illustrator",
+        "card_style": "Warm, sentimental, uplifting one-liners; focus on affection and kindness",
+        "illustration_style": "Soft, pastel, heartwarming, gentle cartoon style"
+      },
+      "Formal": {
+        "role": "Professional speechwriter + designer",
+        "card_style": "Elegant, polished, thoughtful one-liners; formal tone with care and respect",
+        "illustration_style": "Minimal, classic greeting-card look; clean and tasteful"
+      },
+      "Whimsical": {
+        "role": "Fantasy storyteller + illustrator",
+        "card_style": "Playful, magical, imaginative one-liners; fantastical or dreamy references",
+        "illustration_style": "Vibrant, storybook-like illustrations; enchanted, dreamy feel"
+      },
+      "Sarcastic": {
+        "role": "Stand-up comedian + satirical cartoonist",
+        "card_style": "Dry, ironic, sharp humor; witty comebacks or unexpected twists",
+        "illustration_style": "Bold, exaggerated caricature style; cheeky and over-the-top"
+      }
+    };
 
-Recipient: ${formData.recipientName}
-Occasion: ${formData.occasion}
-Tone: ${formData.tone}
-About the recipient: ${formData.aboutRecipient}
+    // Get the configuration for the selected tone
+    const selectedToneConfig = toneConfig[formData.tone];
+    
+    if (!selectedToneConfig) {
+      throw new Error(`Invalid tone selected: ${formData.tone}`);
+    }
 
-Please return exactly 3 card concepts in JSON format:
-[
-  {
-    "card_phrase": "Custom greeting text for the card",
-    "illustration_prompt": "Detailed description for image generation"
-  }
-]`;
+    // Base prompt template with tone-specific configuration
+    const prompt = `You are a ${selectedToneConfig.role}.
+Generate exactly 3 unique card_concepts in valid JSON format.
+
+### Context
+- Recipient's Name: ${formData.recipientName}
+- Occasion: ${formData.occasion}
+- About the Recipient: ${formData.aboutRecipient}
+
+### For each card_concept:
+- Base content on different details from "About the Recipient" when possible.
+- Include:
+  - **card_phrase** → a one-liner (5–25 words) that matches this style: ${selectedToneConfig.card_style}.
+  - **illustration_prompt** → a description for an AI image generator that:
+    - Directly illustrates the message in card_phrase.
+    - Uses 1–2 main subjects with a clear setting.
+    - Style rules: ${selectedToneConfig.illustration_style}.
+
+### Output format
+Return only valid JSON:
+
+{
+  "card_concepts": [
+    { "card_phrase": "...", "illustration_prompt": "..." },
+    { "card_phrase": "...", "illustration_prompt": "..." },
+    { "card_phrase": "...", "illustration_prompt": "..." }
+  ]
+}`;
 
     return prompt;
   };
