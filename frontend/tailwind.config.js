@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Nunito Sans", "sans-serif"],
+        serif: ["Alice", "serif"],
       },
       fontSize: {
         xs: ["12px", { lineHeight: "16px" }],
@@ -110,6 +111,9 @@ export default {
         xl: "24px",
         "2xl": "40px",
         "3xl": "64px",
+      },
+      backgroundImage: {
+        'gradient-primary': 'linear-gradient(to bottom, #ffba00, #e17100)',
       },
       opacity: {
         0: "0",

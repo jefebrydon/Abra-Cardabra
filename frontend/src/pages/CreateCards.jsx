@@ -320,44 +320,72 @@ Return only valid JSON:
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-purple-800 mb-2">
-            🎉✨ Abra Cardabra
-          </h1>
-          <p className="text-gray-600">
-            Generate personalized AI-powered greeting cards in seconds
-          </p>
-        </header>
-        
-        <main className="max-w-4xl mx-auto">
-          <CardForm 
-            onSubmit={handleFormSubmit}
-            isLoading={isLoading}
-          />
-          
+    <div className="w-full px-4 pb-10 pt-12 sm:px-6 md:pt-12 lg:pt-12">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col">
+        {/* Main Heading */}
+        <h1 className="text-left font-serif text-[48px] font-semibold leading-[56px] text-[#3C2F2F] md:text-[36px] md:leading-[44px] sm:text-[28px] sm:leading-[36px]">
+          Summon New Cards
+        </h1>
+
+        <main className="mt-6 grid w-full grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Left side - Form */}
+          <div className="w-full">
+            <CardForm
+              onSubmit={handleFormSubmit}
+              isLoading={isLoading}
+            />
+          </div>
+
+          {/* Right side - Card Display */}
+          <div className="w-full flex items-center justify-center min-h-[400px] lg:min-h-[600px]">
+            <div className="relative w-full max-w-sm lg:max-w-md h-80 lg:h-96">
+              {/* Card-1.png - Back card, bottom-left position, rotated ~40° */}
+              <img 
+                src="/src/assets/Card-1.png" 
+                alt="Card 1" 
+                className="absolute w-48 h-60 lg:w-64 lg:h-80 object-cover rounded-lg shadow-lg z-10"
+                style={{ left: '30%', top: '70%', transform: 'translate(-50%, -50%) rotate(-30deg)' }}
+              />
+              
+              {/* Card-2.png - Middle card, centered position, rotated ~15° */}
+              <img 
+                src="/src/assets/Card-2.png" 
+                alt="Card 2" 
+                className="absolute w-48 h-60 lg:w-64 lg:h-80 object-cover rounded-lg shadow-lg z-20"
+                style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%) rotate(-15deg)' }}
+              />
+              
+              {/* Card-3.png - Front card, top-right position, rotated ~3° */}
+              <img 
+                src="/src/assets/Card-3.png" 
+                alt="Card 3" 
+                className="absolute w-48 h-60 lg:w-64 lg:h-80 object-cover rounded-lg shadow-lg z-30"
+                style={{ left: '70%', top: '30%', transform: 'translate(-50%, -50%)' }}
+              />
+            </div>
+          </div>
+
           {/* Display Generated Card Concepts */}
           {cardConcepts && (
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold text-purple-800 mb-6 text-center">
+            <div className="mt-10 w-full lg:col-span-2">
+              <h2 className="text-2xl font-bold text-stone-800 mb-6 text-center">
                 🎉 Your Generated Cards
               </h2>
               <div className="grid gap-6 md:grid-cols-3">
                 {cardConcepts.map((concept, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-lg p-6 border-2 border-purple-200">
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-200">
                     {/* Image Section */}
                     <div className="mb-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                      <h3 className="text-lg font-semibold text-stone-800 mb-3">
                         Card {index + 1}
                       </h3>
                       
                       {/* Image Display */}
-                      <div className="mb-4 min-h-[200px] bg-gray-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                      <div className="mb-4 min-h-[200px] bg-orange-50 rounded-lg flex items-center justify-center border-2 border-dashed border-orange-200">
                         {isGeneratingImages && imageGenerationProgress[index]?.status === 'pending' && (
                           <div className="text-center">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-2"></div>
-                            <p className="text-sm text-gray-600">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto mb-2"></div>
+                            <p className="text-sm text-stone-600">
                               {imageGenerationProgress[index]?.message || 'Generating image...'}
                             </p>
                           </div>
@@ -390,13 +418,13 @@ Return only valid JSON:
                               <div className="text-center text-orange-600">
                                 <div className="text-orange-500 mb-2">⚠️</div>
                                 <p className="text-sm">{concept.generatedImage.message || 'Image generation attempted'}</p>
-                                <p className="text-xs text-gray-400 mt-1">Check debug panel for details</p>
+                                <p className="text-xs text-stone-400 mt-1">Check debug panel for details</p>
                               </div>
                             ) : (
-                              <div className="text-center text-gray-500">
+                              <div className="text-center text-stone-500">
                                 <div className="text-green-600 mb-2">✅</div>
                                 <p className="text-sm">Image generated successfully</p>
-                                <p className="text-xs text-gray-400 mt-1">(Image data available)</p>
+                                <p className="text-xs text-stone-400 mt-1">(Image data available)</p>
                               </div>
                             )}
                           </div>
@@ -412,8 +440,8 @@ Return only valid JSON:
                         )}
                         
                         {!isGeneratingImages && !concept.imageGenerationStatus && (
-                          <div className="text-center text-gray-500">
-                            <div className="text-gray-400 mb-2">🖼️</div>
+                          <div className="text-center text-stone-500">
+                            <div className="text-stone-400 mb-2">🖼️</div>
                             <p className="text-sm">Image will appear here</p>
                           </div>
                         )}
@@ -422,17 +450,17 @@ Return only valid JSON:
                     
                     {/* Card Phrase */}
                     <div className="mb-4">
-                      <p className="text-gray-700 italic text-center">
+                      <p className="text-stone-700 italic text-center">
                         "{concept.card_phrase}"
                       </p>
                     </div>
                     
                     {/* Illustration Prompt (Debug Info) */}
-                    <div className="bg-gray-50 rounded p-3">
-                      <h4 className="text-sm font-medium text-gray-600 mb-2">
+                    <div className="bg-orange-50 rounded p-3">
+                      <h4 className="text-sm font-medium text-stone-600 mb-2">
                         Illustration Prompt:
                       </h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-stone-600">
                         {concept.illustration_prompt}
                       </p>
                     </div>
@@ -443,8 +471,8 @@ Return only valid JSON:
               {/* Image Generation Status Summary */}
               {isGeneratingImages && (
                 <div className="mt-6 text-center">
-                  <div className="inline-flex items-center bg-blue-100 text-blue-800 px-4 py-2 rounded-full">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                  <div className="inline-flex items-center bg-orange-100 text-orange-800 px-4 py-2 rounded-full">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-600 mr-2"></div>
                     Generating images...
                   </div>
                 </div>
@@ -452,7 +480,7 @@ Return only valid JSON:
             </div>
           )}
           
-          <DebugPanel 
+          <DebugPanel
             formData={debugData.formData}
             generatedPrompt={debugData.generatedPrompt}
             apiRequest={debugData.apiRequest}
@@ -462,6 +490,13 @@ Return only valid JSON:
             error={debugData.error}
           />
         </main>
+        
+        {/* Footer */}
+        <footer className="mt-10 text-center">
+          <p className="text-xs font-medium text-[#7F7268]">
+            Made with 🧙 by Jeff Brydon
+          </p>
+        </footer>
       </div>
     </div>
   );

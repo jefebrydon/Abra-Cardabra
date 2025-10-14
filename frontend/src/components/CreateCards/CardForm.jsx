@@ -4,13 +4,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const CardForm = ({ onSubmit, isLoading }) => {
   const [formData, setFormData] = useState({
     recipientName: '',
     occasion: '',
     tone: '',
+    illustrationStyle: '',
     aboutRecipient: ''
   });
 
@@ -66,6 +66,10 @@ const CardForm = ({ onSubmit, isLoading }) => {
       newErrors.tone = 'Please select a tone';
     }
 
+    if (!formData.illustrationStyle) {
+      newErrors.illustrationStyle = 'Please select an illustration style';
+    }
+
     if (!formData.aboutRecipient.trim()) {
       newErrors.aboutRecipient = 'Please tell us about the recipient';
     }
@@ -83,122 +87,173 @@ const CardForm = ({ onSubmit, isLoading }) => {
     }
   };
 
+  const isFormValid = Boolean(
+    formData.recipientName.trim() &&
+    formData.occasion &&
+    formData.tone &&
+    formData.illustrationStyle &&
+    formData.aboutRecipient.trim()
+  );
+
+  const isSubmitDisabled = isLoading || !isFormValid;
+
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle className="text-2xl font-semibold">Create Your Perfect Card</CardTitle>
-        <CardDescription>
-          Fill out the form below to generate personalized greeting cards
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Recipient Name */}
-          <div className="space-y-2">
-            <Label htmlFor="recipientName">Recipient Name *</Label>
-            <Input
-              id="recipientName"
-              value={formData.recipientName}
-              onChange={(e) => handleInputChange('recipientName', e.target.value)}
-              disabled={isLoading}
-              placeholder="Enter recipient's name"
-              className={errors.recipientName ? 'border-destructive' : ''}
-            />
-            {errors.recipientName && (
-              <p className="text-sm text-destructive">{errors.recipientName}</p>
-            )}
-          </div>
+    <div className="w-full rounded-[20px] border border-[#F7D9B8] bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.04)] sm:p-5">
+      {/* Form Title */}
+      <h2 className="text-left font-sans text-[20px] font-semibold leading-[28px] text-[#4F433A]">
+        Enter Some Details
+      </h2>
+      
+      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+        {/* Recipient Name */}
+        <div className="flex flex-col gap-2">
+          <Label
+            htmlFor="recipientName"
+            className="text-left text-[14px] font-semibold leading-5 text-[#6B5E55]"
+          >
+            Recipient(s) Name
+          </Label>
+          <Input
+            id="recipientName"
+            value={formData.recipientName}
+            onChange={(e) => handleInputChange('recipientName', e.target.value)}
+            disabled={isLoading}
+            placeholder="First Name(s)"
+            className={errors.recipientName ? 'border-red-400 focus-visible:border-red-400 focus-visible:ring-[rgba(248,113,113,0.25)]' : ''}
+          />
+          {errors.recipientName && (
+            <p className="text-left text-xs font-medium text-red-500">{errors.recipientName}</p>
+          )}
+        </div>
 
-          {/* Occasion */}
-          <div className="space-y-2">
-            <Label htmlFor="occasion">Occasion *</Label>
-            <Select
-              value={formData.occasion}
-              onValueChange={(value) => handleInputChange('occasion', value)}
-              disabled={isLoading}
-            >
-              <SelectTrigger className={errors.occasion ? 'border-destructive' : ''}>
-                <SelectValue placeholder="Select an occasion" />
-              </SelectTrigger>
-              <SelectContent>
-                {occasions.map(occasion => (
-                  <SelectItem key={occasion} value={occasion}>
-                    {occasion}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.occasion && (
-              <p className="text-sm text-destructive">{errors.occasion}</p>
-            )}
-          </div>
+        {/* Occasion */}
+        <div className="flex flex-col gap-2">
+          <Label
+            htmlFor="occasion"
+            className="text-left text-[14px] font-semibold leading-5 text-[#6B5E55]"
+          >
+            Occasion
+          </Label>
+          <Select
+            value={formData.occasion}
+            onValueChange={(value) => handleInputChange('occasion', value)}
+            disabled={isLoading}
+          >
+            <SelectTrigger className={errors.occasion ? 'border-red-400 focus:border-red-400 focus:ring-[rgba(248,113,113,0.25)]' : ''}>
+              <SelectValue placeholder="Select an occasion" />
+            </SelectTrigger>
+            <SelectContent>
+              {occasions.map(occasion => (
+                <SelectItem key={occasion} value={occasion}>
+                  {occasion}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors.occasion && (
+            <p className="text-left text-xs font-medium text-red-500">{errors.occasion}</p>
+          )}
+        </div>
 
-          {/* Tone */}
-          <div className="space-y-2">
-            <Label htmlFor="tone">Tone *</Label>
-            <Select
-              value={formData.tone}
-              onValueChange={(value) => handleInputChange('tone', value)}
-              disabled={isLoading}
-            >
-              <SelectTrigger className={errors.tone ? 'border-destructive' : ''}>
-                <SelectValue placeholder="Select a tone" />
-              </SelectTrigger>
-              <SelectContent>
-                {tones.map(tone => (
-                  <SelectItem key={tone} value={tone}>
-                    {tone}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.tone && (
-              <p className="text-sm text-destructive">{errors.tone}</p>
-            )}
-          </div>
+        {/* Tone */}
+        <div className="flex flex-col gap-2">
+          <Label
+            htmlFor="tone"
+            className="text-left text-[14px] font-semibold leading-5 text-[#6B5E55]"
+          >
+            Tone
+          </Label>
+          <Select
+            value={formData.tone}
+            onValueChange={(value) => handleInputChange('tone', value)}
+            disabled={isLoading}
+          >
+            <SelectTrigger className={errors.tone ? 'border-red-400 focus:border-red-400 focus:ring-[rgba(248,113,113,0.25)]' : ''}>
+              <SelectValue placeholder="Select a tone" />
+            </SelectTrigger>
+            <SelectContent>
+              {tones.map(tone => (
+                <SelectItem key={tone} value={tone}>
+                  {tone}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors.tone && (
+            <p className="text-left text-xs font-medium text-red-500">{errors.tone}</p>
+          )}
+        </div>
 
-          {/* About the Recipient */}
-          <div className="space-y-2">
-            <Label htmlFor="aboutRecipient">About the Recipient *</Label>
-            <Textarea
-              id="aboutRecipient"
-              value={formData.aboutRecipient}
-              onChange={(e) => handleInputChange('aboutRecipient', e.target.value)}
-              disabled={isLoading}
-              rows={4}
-              placeholder="Tell us about the recipient..."
-              className={errors.aboutRecipient ? 'border-destructive' : ''}
-            />
-            <p className="text-xs text-muted-foreground">
-              Enter 2-4 key details or themes that you'd want your card to include.
-            </p>
-            {errors.aboutRecipient && (
-              <p className="text-sm text-destructive">{errors.aboutRecipient}</p>
-            )}
-          </div>
+        {/* Illustration Style */}
+        <div className="flex flex-col gap-2">
+          <Label
+            htmlFor="illustrationStyle"
+            className="text-left text-[14px] font-semibold leading-5 text-[#6B5E55]"
+          >
+            Illustration Style
+          </Label>
+          <Select
+            value={formData.illustrationStyle}
+            onValueChange={(value) => handleInputChange('illustrationStyle', value)}
+            disabled={isLoading}
+          >
+            <SelectTrigger className={errors.illustrationStyle ? 'border-red-400 focus:border-red-400 focus:ring-[rgba(248,113,113,0.25)]' : ''}>
+              <SelectValue placeholder="Select an illustration style" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Birthday">Birthday</SelectItem>
+              <SelectItem value="Cartoon">Cartoon</SelectItem>
+              <SelectItem value="Minimalist">Minimalist</SelectItem>
+              <SelectItem value="Watercolor">Watercolor</SelectItem>
+              <SelectItem value="Vintage">Vintage</SelectItem>
+            </SelectContent>
+          </Select>
+          {errors.illustrationStyle && (
+            <p className="text-left text-xs font-medium text-red-500">{errors.illustrationStyle}</p>
+          )}
+        </div>
 
+        {/* About the Recipient */}
+        <div className="flex flex-col gap-2">
+          <Label
+            htmlFor="aboutRecipient"
+            className="text-left text-[14px] font-semibold leading-5 text-[#6B5E55]"
+          >
+            About the Recipient
+          </Label>
+          <Textarea
+            id="aboutRecipient"
+            value={formData.aboutRecipient}
+            onChange={(e) => handleInputChange('aboutRecipient', e.target.value)}
+            disabled={isLoading}
+            placeholder="Enter 2 - 4 details"
+            className={errors.aboutRecipient ? 'border-red-400 focus-visible:border-red-400 focus-visible:ring-[rgba(248,113,113,0.25)]' : ''}
+          />
+          <p className="text-left text-xs text-[#8A7F76]">
+            These details are used to create the card's theme.
+          </p>
+          {errors.aboutRecipient && (
+            <p className="text-left text-xs font-medium text-red-500">{errors.aboutRecipient}</p>
+          )}
+        </div>
 
-          {/* Submit Button */}
-          <div className="pt-4">
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full"
-              size="lg"
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Generating Cards...
-                </div>
-              ) : (
-                'Generate Cards'
-              )}
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+        {/* Submit Button */}
+        <Button
+          type="submit"
+          disabled={isSubmitDisabled}
+          className="mt-2 w-full"
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center gap-2 text-white">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-b-transparent"></div>
+              Summoning Cards...
+            </div>
+          ) : (
+            'Summon Cards'
+          )}
+        </Button>
+      </form>
+    </div>
   );
 };
 

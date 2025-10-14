@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, ChevronRight, Copy, Bug, FileText, MessageSquare, Send, Download, AlertTriangle, Image } from 'lucide-react';
+import { ChevronDown, ChevronRight, Copy, FileText, MessageSquare, Send, Download, AlertTriangle, Image } from 'lucide-react';
 
 const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, imageGenerationRequest, imageGenerationResponse, error }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const copyToClipboard = () => {
     const debugData = {
@@ -22,26 +21,21 @@ const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, imageG
   };
 
   return (
-    <Card className="mt-6 border-destructive/20 bg-destructive/5">
+    <div className="mt-6 w-full max-w-[640px]">
       <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
-        <CardHeader className="pb-3">
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" className="flex items-center justify-between w-full p-0 h-auto">
-              <div className="flex items-center gap-2">
-                <Bug className="h-5 w-5 text-destructive" />
-                <CardTitle className="text-lg text-destructive">Debug Panel</CardTitle>
-              </div>
-              {isExpanded ? (
-                <ChevronDown className="h-4 w-4" />
-              ) : (
-                <ChevronRight className="h-4 w-4" />
-              )}
-            </Button>
-          </CollapsibleTrigger>
-        </CardHeader>
+        <CollapsibleTrigger asChild>
+          <button className="flex w-fit items-center gap-2 text-sm font-semibold text-[#6B5E55]">
+            <span>Debug Panel</span>
+            {isExpanded ? (
+              <ChevronDown className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </button>
+        </CollapsibleTrigger>
         
         <CollapsibleContent>
-          <CardContent className="pt-0 space-y-6">
+          <div className="mt-4 space-y-6 rounded-lg border border-orange-200 bg-orange-50 p-4">
             {/* Raw Form Data */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -143,10 +137,10 @@ const DebugPanel = ({ formData, generatedPrompt, apiRequest, apiResponse, imageG
                 Copy All Debug Data
               </Button>
             )}
-          </CardContent>
+          </div>
         </CollapsibleContent>
       </Collapsible>
-    </Card>
+    </div>
   );
 };
 
