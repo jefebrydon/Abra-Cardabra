@@ -100,7 +100,7 @@ const CardForm = ({ onSubmit, isLoading }) => {
   return (
     <div className="w-full rounded-[20px] border border-[#F7D9B8] bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.04)] sm:p-5">
       {/* Form Title */}
-      <h2 className="text-left font-sans text-[20px] font-semibold leading-[28px] text-[#4F433A]">
+      <h2 className="text-left font-serif text-[20px] font-semibold leading-[28px] text-[#4F433A]">
         Enter Some Details
       </h2>
       

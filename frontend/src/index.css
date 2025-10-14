@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Alice:wght@400&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import "@fontsource/nunito-sans/latin.css";
+@import "@fontsource/alice/latin.css";
 
 @plugin "tailwindcss-animate";
 @import "tw-animate-css";
@@ -7,6 +8,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "Nunito Sans", sans-serif;
+  --font-serif: "Alice", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -118,7 +121,14 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: linear-gradient(to bottom, #FFFEFB, #FEF6E7) !important;
+    min-height: 100vh;
+  }
+  
+  #root {
+    background: linear-gradient(to bottom, #FFFEFB, #FEF6E7);
+    min-height: 100vh;
   }
 }
 
