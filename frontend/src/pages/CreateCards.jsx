@@ -320,14 +320,15 @@ Return only valid JSON:
   };
 
   return (
-    <div className="w-full px-4 pb-10 pt-12 sm:px-6 md:pt-12 lg:pt-12">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col">
-        {/* Main Heading */}
-        <h1 className="text-left font-serif text-[48px] font-semibold leading-[56px] text-[#3C2F2F] md:text-[36px] md:leading-[44px] sm:text-[28px] sm:leading-[36px]">
-          Summon New Cards
-        </h1>
+    <div className="relative min-h-screen">
+      <div className="relative z-10 w-full px-4 pb-10 pt-12 sm:px-6 md:pt-12 lg:pt-12">
+        <div className="mx-auto flex w-full max-w-[1200px] flex-col">
+          {/* Main Heading */}
+          <h1 className="text-left font-serif text-[48px] font-semibold leading-[56px] text-[#3C2F2F] md:text-[36px] md:leading-[44px] sm:text-[28px] sm:leading-[36px]">
+            Summon New Cards
+          </h1>
 
-        <main className="mt-6 grid w-full grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <main className="mt-6 grid w-full grid-cols-1 items-start gap-8 lg:grid-cols-2">
           {/* Left side - Form */}
           <div className="w-full">
             <CardForm
@@ -490,13 +491,14 @@ Return only valid JSON:
             error={debugData.error}
           />
         </main>
-        
+
         {/* Footer */}
         <footer className="mt-10 text-center">
           <p className="text-xs font-medium text-[#7F7268]">
             Made with 🧙 by Jeff Brydon
           </p>
         </footer>
+        </div>
       </div>
     </div>
   );

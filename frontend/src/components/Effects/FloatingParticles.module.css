@@ -1,0 +1,71 @@
+.container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  display: block;
+  transform: translate3d(0, 0, 0);
+  animation-name: float;
+  animation-duration: var(--float-duration, 30s);
+  animation-delay: var(--float-delay, 0s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.circle {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    rgba(255, 214, 168, 0.9) 0%,
+    rgba(255, 214, 168, 0.75) 30%,
+    rgba(255, 214, 168, 0.05) 85%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  animation-name: fade, pulse;
+  animation-duration: var(--fade-duration, 3s), var(--scale-duration, 6s);
+  animation-delay: var(--fade-delay, 0s), var(--scale-delay, 0s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes float {
+  from {
+    transform: translate3d(calc(var(--drift-x, 0vw) * -0.25), 0, 0);
+  }
+  to {
+    transform: translate3d(var(--drift-x, 0vw), -140vh, 0);
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale3d(0.4, 0.4, 1);
+  }
+  50% {
+    transform: scale3d(2.4, 2.4, 1);
+  }
+  100% {
+    transform: scale3d(0.4, 0.4, 1);
+  }
+}
+
